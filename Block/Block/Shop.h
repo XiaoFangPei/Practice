@@ -11,5 +11,9 @@
 @interface Shop : NSObject
 @property (nonatomic, copy) NSString *string;
 @property (nonatomic, copy) void(^myBlock)(void);
+@property (nonatomic, assign) int result;
+
+- (void)calculator:(int(^)(int result))block;
+- (Shop *(^)(int a))add;
 
 @end

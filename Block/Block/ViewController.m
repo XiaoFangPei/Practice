@@ -75,6 +75,9 @@ void test4() {
     
     [self test5];
     [self test6];
+    [self test7];
+    [self test8];
+    [self test9];
 }
 #pragma mark - __weak使用
 - (void)test5 {
@@ -123,7 +126,21 @@ void test4() {
     };
     [self presentViewController:secondVC animated:YES completion:nil];
 }
-
+#pragma mark - Block作为参数使用
+- (void)test8 {
+    Shop *shop = [[Shop alloc] init];
+    // 调用 block用作参数
+    [shop calculator:^int(int result) {
+        result += 5;
+        return result;
+    }];
+}
+#pragma MARK - block作为返回值使用
+- (void)test9 {
+    Shop *shop = [[Shop alloc] init];
+    shop.add(1).add(2).add(3);
+    NSLog(@"%d", shop.result);
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
