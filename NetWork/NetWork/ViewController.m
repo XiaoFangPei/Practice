@@ -20,7 +20,7 @@
     [self GETData];
 }
 - (void)GETData{
-    NSURL *url = [NSURL URLWithString:@"http://60.247.9.208/App/RtuAppView.aspx?userid=1"];
+    NSURL *url = [NSURL URLWithString:@"http://"];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     NSURLSession *session = [NSURLSession sharedSession];
     NSURLSessionDataTask *sessionData = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
@@ -34,6 +34,9 @@
     }];
     // 5.最后一步，执行任务（resume也是继续执行）:
     [sessionData resume];
+}
+- (void)PostWork {
+    
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
