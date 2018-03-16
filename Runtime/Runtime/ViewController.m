@@ -12,7 +12,7 @@
  2. id 是一个参数类型，它是指向某个类的实例指针，定义如下
  typedef struct objc_object *id;
  struct objc_object {
- Class isa;
+ Class isa;  // 指针 实例的isa指向类对象，类对象的isa指向元类
  };
  3. Class 指向objc_class结构体的 指针
  4. Method 代表类中的某个方法的结构体类型
