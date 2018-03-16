@@ -40,7 +40,7 @@
     
     
     NSURLSession *session = [NSURLSession sharedSession];
-    NSURL *url = [NSURL URLWithString:@"http://171.34.43.000:8000/login"];
+    NSURL *url = [NSURL URLWithString:@"http://xxx.34.43.000:8000/login"];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     request.HTTPMethod = @"POST";
     NSDictionary *dic = @{
