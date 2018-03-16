@@ -40,7 +40,7 @@ int main(int argc, char * argv[]) {
         float a = 3.14159;
         printf("%f %lu\n", a, sizeof(float));
         int i1 = 3;
-        //printf("%d\n", ++i1);
+        printf("%d\n", ++i1);
         printf("%d\n", i1++);
         return UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class]));
     }
