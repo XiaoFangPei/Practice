@@ -8,7 +8,7 @@
 
 #import "ViewController.h"
 
-@interface ViewController ()
+@interface ViewController ()<NSURLSessionDelegate>
 
 @end
 
@@ -17,7 +17,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    //[self GETData];
+    [self GETData];
     [self PostWork];
 }
 - (void)GETData{
@@ -68,6 +68,25 @@
     }];
     [sessionDataTask resume];
 }
+- (void)downloadTask {
+    NSURLSession *session = [NSURLSession sharedSession];
+    NSURL *url = [NSURL URLWithString:@""];
+    NSURLSessionDownloadTask *downloadTask = [session downloadTaskWithURL:url completionHandler:^(NSURL * _Nullable location, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        
+    }];
+    [downloadTask resume];
+}
+- (void)downloadBigFileTask {
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
+    NSURL *url = [NSURL URLWithString:@""];
+    NSURLSessionDownloadTask *downloadTask = [session downloadTaskWithURL:url];
+    [downloadTask resume];
+}
+#pragma mark - NSURLSessionDownloadDelegate
+- (void)URLSession:(NSURLSession *)session downloadTask:(nonnull NSURLSessionDownloadTask *)downloadTask didWriteData:(int64_t)bytesWritten totalBytesWritten:(int64_t)totalBytesWritten totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite {
+    
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

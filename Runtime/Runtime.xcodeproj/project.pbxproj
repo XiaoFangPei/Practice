@@ -15,6 +15,7 @@
 		B60B52171FCD355400B4EFDD /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B60B52161FCD355400B4EFDD /* main.m */; };
 		B60B52211FCD355400B4EFDD /* RuntimeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B60B52201FCD355400B4EFDD /* RuntimeTests.m */; };
 		B60B522C1FCD355400B4EFDD /* RuntimeUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = B60B522B1FCD355400B4EFDD /* RuntimeUITests.m */; };
+		B61F00CE2058D03B008C908A /* Person.m in Sources */ = {isa = PBXBuildFile; fileRef = B61F00CD2058D03B008C908A /* Person.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +52,8 @@
 		B60B52271FCD355400B4EFDD /* RuntimeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RuntimeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B60B522B1FCD355400B4EFDD /* RuntimeUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RuntimeUITests.m; sourceTree = "<group>"; };
 		B60B522D1FCD355400B4EFDD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B61F00CC2058D03B008C908A /* Person.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Person.h; sourceTree = "<group>"; };
+		B61F00CD2058D03B008C908A /* Person.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Person.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,6 +108,8 @@
 				B60B52081FCD355400B4EFDD /* AppDelegate.m */,
 				B60B520A1FCD355400B4EFDD /* ViewController.h */,
 				B60B520B1FCD355400B4EFDD /* ViewController.m */,
+				B61F00CC2058D03B008C908A /* Person.h */,
+				B61F00CD2058D03B008C908A /* Person.m */,
 				B60B520D1FCD355400B4EFDD /* Main.storyboard */,
 				B60B52101FCD355400B4EFDD /* Assets.xcassets */,
 				B60B52121FCD355400B4EFDD /* LaunchScreen.storyboard */,
@@ -199,7 +204,7 @@
 				TargetAttributes = {
 					B60B52031FCD355400B4EFDD = {
 						CreatedOnToolsVersion = 9.0.1;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 					};
 					B60B521B1FCD355400B4EFDD = {
 						CreatedOnToolsVersion = 9.0.1;
@@ -267,6 +272,7 @@
 			files = (
 				B60B520C1FCD355400B4EFDD /* ViewController.m in Sources */,
 				B60B52171FCD355400B4EFDD /* main.m in Sources */,
+				B61F00CE2058D03B008C908A /* Person.m in Sources */,
 				B60B52091FCD355400B4EFDD /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -430,11 +436,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = Runtime/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = peixiaofang.Runtime;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -443,11 +451,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = Runtime/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = peixiaofang.Runtime;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
