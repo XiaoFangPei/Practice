@@ -15,6 +15,7 @@
 		B60B52E61FCE56A200B4EFDD /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B60B52E51FCE56A200B4EFDD /* main.m */; };
 		B60B52F01FCE56A200B4EFDD /* NetWorkTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B60B52EF1FCE56A200B4EFDD /* NetWorkTests.m */; };
 		B60B52FB1FCE56A200B4EFDD /* NetWorkUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = B60B52FA1FCE56A200B4EFDD /* NetWorkUITests.m */; };
+		B66A87DB20BBF6E500EE37A4 /* netWork.md in Resources */ = {isa = PBXBuildFile; fileRef = B66A87DA20BBF6E500EE37A4 /* netWork.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +52,7 @@
 		B60B52F61FCE56A200B4EFDD /* NetWorkUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NetWorkUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B60B52FA1FCE56A200B4EFDD /* NetWorkUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NetWorkUITests.m; sourceTree = "<group>"; };
 		B60B52FC1FCE56A200B4EFDD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B66A87DA20BBF6E500EE37A4 /* netWork.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = netWork.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,6 +107,7 @@
 				B60B52D71FCE56A200B4EFDD /* AppDelegate.m */,
 				B60B52D91FCE56A200B4EFDD /* ViewController.h */,
 				B60B52DA1FCE56A200B4EFDD /* ViewController.m */,
+				B66A87DA20BBF6E500EE37A4 /* netWork.md */,
 				B60B52DC1FCE56A200B4EFDD /* Main.storyboard */,
 				B60B52DF1FCE56A200B4EFDD /* Assets.xcassets */,
 				B60B52E11FCE56A200B4EFDD /* LaunchScreen.storyboard */,
@@ -238,6 +241,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B66A87DB20BBF6E500EE37A4 /* netWork.md in Resources */,
 				B60B52E31FCE56A200B4EFDD /* LaunchScreen.storyboard in Resources */,
 				B60B52E01FCE56A200B4EFDD /* Assets.xcassets in Resources */,
 				B60B52DE1FCE56A200B4EFDD /* Main.storyboard in Resources */,
