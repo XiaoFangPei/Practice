@@ -6,6 +6,9 @@
 //  Copyright © 2018年 sinosoft. All rights reserved.
 // iOS多线程编程
 
+// 主线程负责用户看得见的任务 例如:添加控件,刷新页面 除了主线程以外,都叫子线程。
+// 子线程一般负责用户之间看不到的任务,例如,加载图片的过程,下载视频等
+
 #import "ViewController.h"
 
 @interface ViewController ()
@@ -18,7 +21,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     /*GCD 队列和执行方式
-     主队列 是GCD自带的一种特殊穿行队列，放在主队列中的任务，都会放在主线程中执行
+     主队列 是GCD自带的一种特殊串行队列，放在主队列中的任务，都会放在主线程中执行
      dispatch_get_main_queue()
      全局队列
      队列 任务执行方式 并发多个任务同时执行，串行一个一个执行
@@ -60,11 +63,17 @@
 //    dispatch_async(myQueue, ^{
 //        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER); // 等待信号量大于等于1
 //
-//        dispatch_semaphore_signal(semaphore);// 信号量加1
+//        dispatch_semaphore_signal(semaphore);// 发送信号量，信号量加1
 //
 //    });
+//    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER) // 等待信号量
     //NSOperation 同步执行 是对gcd中block的封装，也表示要执行的任务。表示的任务可以被取消
 //    [self operationQueue];
+    //[self testSerialQueueWithAsync];
+    //[self testConcurrentQueueWithAsync];
+    //[self testSerialQueueWithSync];
+    //[self testConcurrentQueueWithSync];
+    //[self testBarrierSyncWithConCurrentQueue];
 }
 - (void)operationQueue {
     
@@ -122,12 +131,127 @@
      前者表示立刻检查属于这个group的任务是否已经完成，后者则表示一直等到属于这个group的任务全部完成。
      */
 }
+// 串行队列异步
+//遵守先进先出原则 顺序打印。每次dispatch_async开辟线程执行串行队列中的任务时，总是使用同一个异步线程。serial_queue Running on main Thread这句话并没有在最后 执行，而是会 出现在随机的位置，它会开辟一个新的县城执行，不会阻塞主线程。
+- (void)testSerialQueueWithAsync {
+    dispatch_queue_t serial_queue = dispatch_queue_create("com.reviewcode.www", DISPATCH_QUEUE_SERIAL);
+    for (int index = 0; index < 10; index++) {
+        dispatch_async(serial_queue, ^{
+            NSLog(@"serial_queueindex=%d", index);
+            NSLog(@"currentThread= %@", [NSThread currentThread]);
+        });
+    }
+    NSLog(@"serial_queue Running on main Thread");
+}
+// 并行异步
+//每次执行一次任务dispatch_async总会为我们开辟一个新的线程来执行任务。不同线程开始结束时间都不一样，导致了乱序 主线程没有阻塞。
+- (void)testConcurrentQueueWithAsync {
+    dispatch_queue_t concurrent_queue = dispatch_queue_create("com.xiaofang.www", DISPATCH_QUEUE_CONCURRENT);
+    for (int index = 0; index < 10; index++) {
+        dispatch_async(concurrent_queue, ^{
+            NSLog(@"index=%d", index);
+            NSLog(@"currentThread= %@", [NSThread currentThread]);
+        });
+    }
+    NSLog(@"Running on main Thread");
+}
+// 串行同步
+// dispatch_sync并没有开辟一个新的线程，直接在当前线程中执行代码（主线程），所以会阻塞当前线程。
+- (void)testSerialQueueWithSync {
+    dispatch_queue_t serial_queue = dispatch_queue_create("com.reviewcode.www", DISPATCH_QUEUE_SERIAL);
+    for (int index = 0; index < 10; index++) {
+        dispatch_sync(serial_queue, ^{
+            NSLog(@"serial_queueindex=%d", index);
+            NSLog(@"currentThread= %@", [NSThread currentThread]);
+        });
+    }
+    NSLog(@"serial_queue Running on main Thread");
+}
+//并行同步
+// 结果和 在串行队列执行的效果一摸一样。dispatch_sync并没有开辟一个新的线程，
+- (void)testConcurrentQueueWithSync {
+    dispatch_queue_t concurrent_queue = dispatch_queue_create("com.xiaofang.www", DISPATCH_QUEUE_CONCURRENT);
+    for (int index = 0; index < 10; index++) {
+        dispatch_sync(concurrent_queue, ^{
+            NSLog(@"index=%d", index);
+            NSLog(@"currentThread= %@", [NSThread currentThread]);
+        });
+    }
+    NSLog(@"Running on main Thread");
+}
+// dispatch_barrier之后的任务总是得dispatch_barrier之前的任务完成之后再执行
+// barrier和串行队列配合是完全没有意义的。barrier的目的是为了某种情况下，同一个队列中有一些并发任务必须在另一些并发任务之后执行，所以需要一个类似于拦截的功能，迫使执行的任务必须等待。串行队列中的所有任务本身就是按照顺序执行的，没有必要使用拦截功能。
+// barrier实现的基本条件是要写在同一个队列中。使用global queue系统分配你的可能是不同的并行队列，你在其中插入一个barrier没有意义。
+//dispatch_barrier_sync 会在队列中充当一个栅栏的作用，凡是在他之后进入队列的任务，总会在dispatch_barrier_sync之前的所有任务执行完毕之后才执行。 会在主线程执行队列中的任务，主线程会被阻塞，从而在barrier之后执行。
+- (void)testBarrierSyncWithConCurrentQueue {
+    dispatch_queue_t concurrent_queue = dispatch_queue_create("com.xiaofang.www", DISPATCH_QUEUE_CONCURRENT);
+    for (int index = 0; index<10; index++) {
+        dispatch_async(concurrent_queue, ^{
+            NSLog(@"index = %d", index);
+        });
+    }
+    for (int j = 0; j<100; j++) {
+        dispatch_barrier_sync(concurrent_queue, ^{
+            if (j == 100 - 1) {
+                NSLog(@"barrier Finished");
+                NSLog(@"currentThread= %@", [NSThread currentThread]);
+            }
+        });
+    }
+    NSLog(@"Running on main Thread");
+    for (int index = 10; index<20; index++) {
+        dispatch_async(concurrent_queue, ^{
+            NSLog(@"index = %d", index);
+        });
+    }
+}
+// dispatch_barrier_async 会开辟一条新的线程执行其中的任务，所以不会阻塞当前线程，其他功能和dispatch_barrier_sync相同。
+- (void)testBarrierAsyncWithConCurrentQueue {
+    dispatch_queue_t concurrent_queue = dispatch_queue_create("com.xiaofang.www", DISPATCH_QUEUE_CONCURRENT);
+    for (int index = 0; index<10; index++) {
+        dispatch_async(concurrent_queue, ^{
+            NSLog(@"index = %d", index);
+        });
+    }
+    for (int j = 0; j<100; j++) {
+        dispatch_barrier_async(concurrent_queue, ^{
+            if (j == 100 - 1) {
+                NSLog(@"barrier Finished");
+                NSLog(@"currentThread= %@", [NSThread currentThread]);
+            }
+        });
+    }
+    NSLog(@"Running on main Thread");
+    for (int index = 10; index<20; index++) {
+        dispatch_async(concurrent_queue, ^{
+            NSLog(@"index = %d", index);
+        });
+    }
+}
+// 测试NSMutableDictionary是否是线程安全的
+- (void)testMutableDictionnaryThreadSafe {
+    dispatch_queue_t concurrent_queue = dispatch_queue_create("com.xiaofang.www", DISPATCH_QUEUE_CONCURRENT);
+    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:1];
+    dispatch_semaphore_t sema = dispatch_semaphore_create(0);
+    dispatch_async(concurrent_queue, ^{
+        for (int index = 0; index < 100; index++) {
+            dict[@(index)] = @(index);
+        }
+        dispatch_semaphore_signal(sema);
+    });
+    dispatch_semaphore_wait(sema, DISPATCH_TIME_FOREVER);
+    dispatch_semaphore_wait(sema, DISPATCH_TIME_FOREVER);
+    NSLog(@"dict is %@", dict);
+}
+ // 运行崩溃 说明NSMutableDictionnary不是线程安全的
+// 使用GCD实现线程安全的字典
+
 - (void)asncGlobalQueue {
     // 获得全局的并发队列
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     dispatch_queue_t queue2 = dispatch_queue_create("com.sinosoft.queue",NULL);
     dispatch_queue_t mainQueue = dispatch_get_main_queue();
-    void (^task) () = ^ {
+    void (^task) (void) = ^ {
         dispatch_sync(queue, ^{
             NSLog(@"Login %@", [NSThread currentThread]);
         });
